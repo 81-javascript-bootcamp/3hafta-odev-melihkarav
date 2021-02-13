@@ -1,13 +1,24 @@
 body {
-    background: #cbedb5;
-    padding-top: 25px;
+    background: #D5C9E5;
+}
+
+.row-bg {
+    background-color: #B16FFF;
 }
 
 .main-image {
-    max-width: 100%;
+    width: 100%;
+    padding: 40px 0 0 0;
 }
 
-.pet-image {
-    width: 30px;
-    height: 30px;
+.p-image {
+    width: 75px;
+    height: 75px;
+}
+
+.info {
+    font-family: Arial; 
+    font-style: italic; 
+    font-size: 12px; 
+    font-weight: 400;
 }
