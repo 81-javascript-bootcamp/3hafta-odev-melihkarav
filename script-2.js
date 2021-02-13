@@ -1,38 +1,55 @@
+const $mainImage = document.querySelector(".main-image");
+const $tbody = document.querySelector("tbody");
+
 const petsModule = (function(){
     const _data = [
         {
-            image: "https://pet-uploads.adoptapet.com/1/6/b/406528149.jpg",
-            name: "Sam",
-            type: "Golden Retriever/St. Bernard Mix",
+            image: "assets/images/dog.jpg",
+            name: "Ares",
+            type: "Equus Caballus",
             sound: "bark",
-            soundText: "Bark - type b"
+            button: "Bark"
         },
         {
-            image: "https://pet-uploads.adoptapet.com/0/f/3/462356648.jpg",
-            name: "Mellie",
-            type: "Domestic Shorthair",
+            image: "assets/images/cat.jpg",
+            name: "Felix",
+            type: "Felis Catus",
             sound: "meow",
-            soundText: "Meow - type m"
+            button: "Meow"
+        },
+        {
+            image: "assets/images/bird.jpg",
+            name: "Arthur",
+            type: "Ara Macao",
+            sound: "squawk",
+            button: "Squawk"
+        },
+        {
+            image: "assets/images/horse.jpg",
+            name: "Alfred",
+            type: "Equus Caballus",
+            sound: "neat",
+            button: "Neat"
         }
     ];
-    const $tbodyEl = document.querySelector("tbody");
-    const $buttons= document.querySelectorAll("button");
 
+    const createEl = function(pet){
+        return "<tr class='p-row'><td><img class='p-image' src='"+pet.image+"' /></td><td>"+pet.name+"</td><td>"+pet.type+
+        "</td><td><button class='btn btn-danger' data-sound='"+pet.sound+"'>"+pet.button+"</button></td></tr>"
+    };
+    
     const getButtons = function(){
         return document.querySelectorAll("button");
     }
 
-    const createPetElement = function(pet){
-        return "<tr><td><img class='pet-image' src='"+pet.image+"' /></td><td>"+pet.name+"</td><td>"+pet.type+"</td><td><button data-sound='"+pet.sound+"'>"+pet.soundText+"</button></td></tr>"
-    };
 
-    const addToTable = function(content){
-        $tbodyEl.innerHTML += content;
+    const addElToTable = function(content){
+        $tbody.innerHTML += content;
     }
 
-    const putPetsInHtml = function(){
+    const putElToTable = function(){
         for(let i=0; i< _data.length; i++){
-            addToTable(createPetElement(_data[i]));
+            addElToTable(createEl(_data[i]));
         }
     }
 
@@ -40,6 +57,7 @@ const petsModule = (function(){
         const buttons = getButtons();
         for(let i= 0; i< buttons.length; i++){
             buttons[i].addEventListener("click", function(event){
+              event.stopPropagation();
                 const soundId = this.dataset.sound;
                 const soundElement = document.getElementById(soundId);
                 if(soundElement){
@@ -48,10 +66,39 @@ const petsModule = (function(){
             });
         }
     }
+    
+    const getRows = function(){
+        return document.querySelectorAll(".p-row");
+    }
+
+    var sounds = {
+        98 : 'bark', // b
+        109 : 'meow', // m
+        115: 'squawk', // s
+        110: 'neat' // n
+     
+     };
+
+     document.onkeypress = function(e) {
+         var soundId = sounds[e.keyCode];
+         if (soundId) document.getElementById(soundId).play();
+         else console.log("key not mapped : ", e.keyCode);
+     }
+
+    const changeRowBg = function(){
+        const rows = getRows();
+        rows.forEach((row,index) => {
+            row.addEventListener("click", function(){
+                $mainImage.setAttribute("src",_data[index].image); 
+                row.classList.toggle("row-bg");
+            });
+        })
+    }
 
     const init = function(){
-        putPetsInHtml();
+        putElToTable();
         bindEvents();
+        changeRowBg();
     }
 
     return {
